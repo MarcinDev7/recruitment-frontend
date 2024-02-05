@@ -1,0 +1,5 @@
+REACT_APP_REDIRECT_URI=http://localhost:3000/login
+REACT_APP_AUTH0_DOMAIN=dev-r2ek5wmc57i7c2nx.us.auth0.com
+REACT_APP_AUTH0_CLIENT_ID=nYk2SW38YHyemyeBSdjXFIQmKGy5QNhF
+REACT_APP_AUTH0_CALLBACK_URL=http://localhost:3000/callback
+REACT_APP_AUTH0_AUDIENCE=http://localhost:4000/graphql
