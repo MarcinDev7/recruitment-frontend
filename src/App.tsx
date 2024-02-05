@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import { AuthenticationGuard } from "./components/AuthenticationGuard";
+import MainPage from "./components/MainPage";
+import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
+import PageLoader from "./components/PageLoader";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <WithToken>
+      <Routes>
+        <Route
+          path="*"
+          element={
+            <AuthenticationGuard
+              component={() => <MainPage />}
+            ></AuthenticationGuard>
+          }
+        />
+      </Routes>
+    </WithToken>
   );
 }
 
 export default App;
+function WithToken({ children }: { children: JSX.Element }) {
+  const { isLoading, getAccessTokenSilently } = useAuth0();
+
+  React.useEffect(() => {
+    getAccessTokenSilently().then((token) => {
+      localStorage.setItem("token", token);
+    });
+
+    return () => {};
+  }, []);
+
+  if (isLoading) return <PageLoader />;
+
+  return <>{children}</>;
+}
